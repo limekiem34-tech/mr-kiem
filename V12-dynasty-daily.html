@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dynasty Daily: Year 7 HASS games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E4EBE3; --surface:#F4F7F2; --ink:#1D2622; --muted:#55625B; --line:#C5D0C6;
+  --cinnabar:#B3352B; --bronze:#9A7A3A; --jade:#2F7560; --blue:#3B5A7A;
+  --slip:#DCCB94; --slip-line:#C7B276; --slip-ink:#2B2416; --absent:#7C8781;
+  --on-accent:#FFFFFF; --hero:#EEF2EC; --mtn3:#C3CFC5; --mtn2:#91A598; --mtn1:#4D6258;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#111916; --surface:#1A2420; --ink:#E5ECE5; --muted:#9BA89F; --line:#2E3B35;
+    --cinnabar:#E0574A; --bronze:#C9A45C; --jade:#4FA886; --blue:#7FA3C9;
+    --slip:#3A3424; --slip-line:#4A422E; --slip-ink:#EADFC0; --absent:#46514B; --hero:#16201B; --mtn3:#22302A; --mtn2:#2C3E35; --mtn1:#3B5247;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111916; --surface:#1A2420; --ink:#E5ECE5; --muted:#9BA89F; --line:#2E3B35;
+  --cinnabar:#E0574A; --bronze:#C9A45C; --jade:#4FA886; --blue:#7FA3C9;
+  --slip:#3A3424; --slip-line:#4A422E; --slip-ink:#EADFC0; --absent:#46514B; --hero:#16201B; --mtn3:#22302A; --mtn2:#2C3E35; --mtn1:#3B5247;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html[data-big]{font-size:125%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:1rem;line-height:1.5;-webkit-tap-highlight-color:transparent}
+h1,h2,h3,.display{font-family:"Shippori Mincho B1","Songti SC","Noto Serif",Georgia,serif;font-weight:800;line-height:1.15;margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.wrap{max-width:960px;margin:0 auto;padding:1.25rem 1rem 3rem}
+.muted{color:var(--muted)}
+
+/* Header */
+.top{display:flex;gap:1rem;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem}
+.title h1{font-size:clamp(2.1rem,7vw,3.4rem);letter-spacing:-.01em}
+.title p{margin:.35rem 0 0;color:var(--muted);max-width:34rem}
+.seal{flex:none;width:76px;height:76px;background:var(--cinnabar);color:#fff;border-radius:6px;display:grid;place-items:center;text-align:center;transform:rotate(-4deg);box-shadow:inset 0 0 0 3px rgba(255,255,255,.35)}
+.seal b{display:block;font-family:"Shippori Mincho B1",Georgia,serif;font-size:1.9rem;line-height:1}
+.seal span{font-size:.72rem;line-height:1.1}
+.controls{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin:0 0 1.5rem}
+.seg{display:inline-flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:.45rem 1rem;font-weight:700}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.chip{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:.4rem .9rem;font-weight:700}
+.chip[aria-pressed="true"]{border-color:var(--jade);color:var(--jade)}
+.stat{font-weight:700}
+
+/* Menu: ink-wash hero + artefact cards */
+.hero{position:relative;overflow:hidden;border-radius:10px;background:var(--hero);padding:1.4rem 1.2rem 0;margin-bottom:1rem}
+.hero .ink{display:block;width:calc(100% + 2.4rem);margin:.6rem -1.2rem 0;height:auto;aspect-ratio:4/1;min-height:120px;max-height:230px}
+.hero .head{position:relative;display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}
+.hero h1{font-size:clamp(2.3rem,8vw,3.8rem);letter-spacing:-.01em}
+.hero p{margin:.4rem 0 0;max-width:30rem;color:var(--muted)}
+.mt3{fill:var(--mtn3)}.mt2{fill:var(--mtn2)}.mt1{fill:var(--mtn1)}.sun{fill:var(--cinnabar)}
+.birds{fill:none;stroke:var(--mtn1);stroke-width:2;stroke-linecap:round}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+@media(min-width:700px){.cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:.9rem}}
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1.4rem .95rem 1rem;text-align:left;display:flex;flex-direction:column;gap:.45rem;min-height:190px;transition:border-color .15s ease,transform .15s ease}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:9px;background:var(--cinnabar);border-radius:8px 8px 0 0;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='9'%3E%3Cpath d='M1 8V1h12v5H6V4h4' fill='none' stroke='black' stroke-width='1.6'/%3E%3C/svg%3E") repeat-x;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='9'%3E%3Cpath d='M1 8V1h12v5H6V4h4' fill='none' stroke='black' stroke-width='1.6'/%3E%3C/svg%3E") repeat-x}
+.card:hover{border-color:var(--jade);transform:translateY(-2px)}
+.emblem{width:48px;height:48px;border-radius:50%;border:2px solid var(--jade);color:var(--jade);display:grid;place-items:center;margin-bottom:.25rem}
+.emblem svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.card h3{font-size:1.22rem;line-height:1.2;color:var(--ink)}
+.card .desc{font-size:.9rem;line-height:1.35;color:var(--muted)}
+.card .go{margin-top:auto;font-weight:700;color:var(--jade);font-size:.9rem}
+.card .done{position:absolute;top:1.1rem;right:.7rem;background:var(--cinnabar);color:#fff;font-weight:700;font-size:.8rem;padding:.2rem .45rem;border-radius:3px;transform:rotate(-6deg)}
+.footnote{margin-top:1.5rem;font-size:.9rem;color:var(--muted);max-width:44rem}
+
+/* Game shell */
+.gtop{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:1rem}
+.back{border:0;background:transparent;font-weight:700;padding:.4rem 0;color:var(--muted)}
+.gtitle{font-size:clamp(1.6rem,5vw,2.2rem)}
+.progress{font-weight:700;color:var(--muted)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1rem}
+.prompt{font-family:"Shippori Mincho B1",Georgia,serif;font-weight:600;font-size:clamp(1.25rem,4vw,1.6rem);line-height:1.3;margin:0 0 1rem}
+.tag{display:inline-block;font-size:.78rem;font-weight:700;padding:.1rem .5rem;border-radius:3px;margin-bottom:.6rem;color:var(--on-accent)}
+.tag.china{background:var(--cinnabar)}.tag.other{background:var(--bronze)}.tag.local{background:var(--jade)}.tag.compare{background:var(--blue)}
+.row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.input{flex:1 1 12rem;min-width:0;padding:.75rem .9rem;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;font-size:1.1rem}
+.btn{border:2px solid var(--ink);background:var(--ink);color:var(--bg);padding:.7rem 1.1rem;border-radius:8px;font-weight:700}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.feedback{margin-top:.9rem;padding:.8rem .9rem;border-left:5px solid var(--jade);background:var(--bg);border-radius:0 8px 8px 0}
+.feedback.bad{border-color:var(--cinnabar)}
+.feedback.mid{border-color:var(--bronze)}
+.big-score{font-family:"Shippori Mincho B1",Georgia,serif;font-size:2.4rem;font-weight:800}
+.list{margin:.5rem 0 0;padding:0;list-style:none;display:grid;gap:.3rem}
+.list li{display:flex;justify-content:space-between;gap:1rem;padding:.35rem .5rem;border-radius:6px;background:var(--surface)}
+.list li.you{outline:2px solid var(--jade)}
+
+/* Wordle */
+.wgrid{display:grid;gap:6px;justify-content:center;margin:.5rem 0 1rem}
+.wrow{display:grid;gap:6px}
+.tile{width:min(11vw,52px);height:min(11vw,52px);display:grid;place-items:center;border:2px solid var(--line);font-weight:700;font-size:1.4rem;border-radius:4px;background:var(--surface)}
+.tile.filled{border-color:var(--muted)}
+.tile.correct{background:var(--jade);border-color:var(--jade);color:#fff}
+.tile.present{background:var(--bronze);border-color:var(--bronze);color:#fff}
+.tile.absent{background:var(--absent);border-color:var(--absent);color:#fff}
+.kb{display:grid;gap:6px;max-width:520px;margin:0 auto}
+.kbr{display:flex;gap:5px;justify-content:center}
+.key{flex:1;min-width:0;height:52px;border:0;border-radius:6px;background:var(--line);font-weight:700;font-size:.95rem;padding:0}
+.key.wide{flex:1.6;font-size:.8rem}
+.key.correct{background:var(--jade);color:#fff}.key.present{background:var(--bronze);color:#fff}.key.absent{background:var(--absent);color:#fff}
+.clue{text-align:center;margin:0 auto .5rem;max-width:32rem}
+
+/* Connections */
+.cgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.ctile{min-height:64px;border:0;border-radius:8px;background:var(--slip);color:var(--slip-ink);font-weight:700;font-size:clamp(.72rem,2.6vw,.95rem);padding:.3rem;line-height:1.15;word-break:break-word}
+.ctile[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.solved{border-radius:8px;padding:.6rem;text-align:center;color:#fff;margin-bottom:6px}
+.solved b{display:block}
+.lv0{background:var(--jade)}.lv1{background:var(--bronze)}.lv2{background:var(--blue)}.lv3{background:var(--cinnabar)}
+.dots{display:inline-flex;gap:4px;vertical-align:middle}.dots i{width:10px;height:10px;border-radius:50%;background:var(--muted);display:inline-block}.dots i.used{background:var(--line)}
+
+/* Timeline */
+.tl{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+.tl li{display:flex;align-items:center;gap:.6rem;background:var(--surface);border:2px solid var(--line);border-radius:8px;padding:.55rem .6rem}
+.tl li.ok{border-color:var(--jade)}.tl li.no{border-color:var(--cinnabar)}
+.tl .txt{flex:1}
+.tl .yr{font-weight:700;color:var(--muted);font-size:.9rem;white-space:nowrap}
+.arrows{display:flex;flex-direction:column;gap:3px}
+.arrows button{border:1px solid var(--line);background:var(--bg);border-radius:5px;width:38px;height:28px;padding:0;font-weight:700}
+
+/* Choice buttons */
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}
+.choice{border:2px solid var(--line);background:var(--surface);border-radius:8px;padding:.9rem .6rem;font-weight:700;min-height:64px}
+.choice.right{border-color:var(--jade);background:var(--jade);color:#fff}
+.choice.wrong{border-color:var(--cinnabar);background:var(--cinnabar);color:#fff}
+.cluelist{margin:0 0 1rem;padding-left:1.4rem;display:grid;gap:.35rem}
+.share{white-space:pre-wrap;background:var(--bg);border:1px dashed var(--line);border-radius:8px;padding:.7rem;font-size:.95rem}
+
+/* New games */
+.ptl{list-style:none;margin:0;padding:0;display:grid;gap:.35rem}
+.ptl li{display:flex;align-items:center;gap:.6rem;border-radius:8px}
+.ptl .ref{background:var(--bg);border:1px solid var(--line);padding:.55rem .7rem}
+.ptl .txt{flex:1}.ptl .yr{font-weight:700;color:var(--muted);font-size:.9rem;white-space:nowrap}
+.ptl .gap button{width:100%;border:2px dashed var(--jade);background:transparent;color:var(--jade);border-radius:8px;padding:.45rem;font-weight:700}
+.ptl .gap.miss{border:2px dashed var(--cinnabar);color:var(--cinnabar);padding:.4rem .7rem;font-weight:700}
+.ptl .placed{padding:.6rem .7rem;color:#fff}.ptl .placed.ok{background:var(--jade)}.ptl .placed.no{background:var(--bronze)}
+.ptl .placed .yr{color:#fff}
+.route{list-style:none;margin:0 0 .6rem;padding:0;display:flex;justify-content:space-between;position:relative}
+.route::before{content:"";position:absolute;left:6px;right:6px;top:7px;height:3px;background:var(--line)}
+.route li{position:relative;display:flex;flex-direction:column;align-items:center;gap:.25rem;flex:1;font-size:.68rem;font-weight:700;text-align:center;color:var(--muted);min-width:0}
+.route .dot{width:16px;height:16px;border-radius:50%;background:var(--surface);border:3px solid var(--line)}
+.route .been .dot{background:var(--bronze);border-color:var(--bronze)}.route .been{color:var(--ink)}
+.route .next .dot{border-color:var(--cinnabar)}
+.trail{font-size:.85rem;font-weight:700;color:var(--bronze);margin:0 0 .4rem}
+.choices.one{grid-template-columns:1fr}
+.meters{display:grid;gap:.4rem}
+.meter{display:grid;grid-template-columns:8.5rem 1fr 2rem;gap:.6rem;align-items:center;font-size:.92rem}
+.meter .bar{height:12px;border-radius:6px;background:var(--line);overflow:hidden}.meter .bar i{display:block;height:100%;transition:width .4s ease}
+.meter b{text-align:right}
+.sortcard{background:var(--slip);color:var(--slip-ink);border-radius:8px;padding:1.2rem 1rem;text-align:center;font-family:"Shippori Mincho B1",Georgia,serif;font-weight:600;font-size:1.25rem;line-height:1.3}
+.bins{display:grid;gap:.5rem}
+.bin{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.5rem;display:flex;flex-direction:column;gap:.4rem;min-width:0}
+.bin .btn{padding:.6rem .3rem;font-size:.9rem;word-break:break-word}
+.bin ul{list-style:none;margin:0;padding:0;display:grid;gap:.3rem;font-size:.82rem;line-height:1.3}
+.bin li{overflow-wrap:anywhere;padding:.3rem .4rem;border-radius:5px;border-left:4px solid var(--jade);background:var(--bg)}
+.bin li.no{border-color:var(--cinnabar)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap" id="app" aria-live="polite"></main>
+<script>
+/* ============ CONTENT ============
+   Category weights: Ancient China 65%, other ancient societies 15%,
+   deep time + geography + civics 15%, cross-civilisation comparisons 5%. */
+const CATW={china:.65,other:.15,local:.15,compare:.05};
+const CATNAME={china:"Ancient China",other:"Egypt, Greece & Rome",local:"Deep time, geography & civics",compare:"Compare civilisations"};
+
+const WORDS=[
+["SILK","Fabric made from moth cocoons. China kept how it was made a secret for centuries.","china"],
+["JADE","Hard green stone carved into ritual objects and even burial suits.","china"],
+["BRONZE","Copper-and-tin metal used for Shang ritual vessels.","china"],
+["ORACLE","Shang kings asked their ancestors questions using ___ bones.","china"],
+["DYNASTY","A line of rulers from the same family.","china"],
+["DAOISM","Belief system about living in harmony with the natural Way.","china"],
+["LAOZI","Legendary founder of Daoism.","china"],
+["EMPEROR","Title first taken by Qin Shi Huang in 221 BCE.","china"],
+["MANDATE","The ___ of Heaven gave a ruler the right to rule.","china"],
+["LEGALISM","Philosophy of strict laws and harsh punishments used by the Qin.","china"],
+["YANGTZE","China's longest river.","china"],
+["LOESS","Fine yellow soil that gives the Huang He its colour.","china"],
+["MILLET","Hardy grain farmed along the Yellow River thousands of years ago.","china"],
+["SHANG","Dynasty famous for oracle bones and bronze casting.","china"],
+["ZHOU","The longest-ruling dynasty in Chinese history.","china"],
+["CROSSBOW","Trigger-fired weapon that gave Qin armies an advantage.","china"],
+["SCHOLAR","Educated person ranked first of the four occupations.","china"],
+["PEASANT","Farmer. Most people in ancient China were one.","china"],
+["ANCESTOR","Families made offerings to honour this person who had died.","china"],
+["BAMBOO","Strips of this plant were tied together to make early books.","china"],
+["CARAVAN","Group of merchants and camels crossing the Silk Road.","china"],
+["COMPASS","Han-era 'south-pointer' made with magnetic lodestone.","china"],
+["PAPER","Cai Lun improved how this was made in 105 CE.","china"],
+["WARRIOR","Thousands of terracotta ___ figures guard an emperor's tomb.","china"],
+["CHARIOT","Horse-drawn vehicle buried in Shang and Qin tombs.","china"],
+["CENSUS","Han officials counted the population in one of these in 2 CE.","china"],
+["WALL","Qin Shi Huang linked older ones together to keep out northern raiders.","china"],
+["TOMB","Qin Shi Huang's ___ is guarded by a clay army.","china"],
+["KILN","Very hot oven used to fire terracotta figures.","china"],
+["FILIAL","___ piety means respect and duty towards parents.","china"],
+["LACQUER","Shiny protective coating made from tree sap.","china"],
+["SCROLL","Rolled-up length of silk or paper used for writing and painting.","china"],
+["PHARAOH","Ruler of ancient Egypt.","other"],
+["PAPYRUS","Egyptian writing material made from a river reed.","other"],
+["MUMMY","Preserved body prepared for the afterlife.","other"],
+["SENATE","Council of powerful men in ancient Rome.","other"],
+["LEGION","Unit of about 5,000 Roman soldiers.","other"],
+["AGORA","Open meeting and market place in a Greek city.","other"],
+["SPARTA","Greek city-state famous for its warriors.","other"],
+["PYRAMID","Giant stone tomb at Giza.","other"],
+["FORUM","Rome's central public square.","other"],
+["OCHRE","Natural earth pigment used in First Nations rock art.","local"],
+["MIDDEN","Mound of shells and bones left from meals over thousands of years.","local"],
+["MUNGO","Lake ___ in NSW, where 42,000-year-old human remains were found.","local"],
+["DROUGHT","Long period with much less rain than usual.","local"],
+["AQUIFER","Underground layer of rock that holds water.","local"],
+["DELTA","Landform made where a river drops sediment as it meets the sea.","local"],
+["MONSOON","Seasonal wind that brings heavy summer rain.","local"],
+["ESTUARY","Where fresh river water mixes with salty sea water.","local"],
+["MURRAY","Australia's longest river.","local"],
+["BALLOT","Paper you fill in to vote.","local"],
+["SCARCITY","Economic problem: limited resources but unlimited wants.","local"],
+["EMPIRE","Han China and Rome were both huge ones at the same time.","compare"],
+["RIVER","Egypt, Mesopotamia and China all grew up beside one.","compare"]
+].map(([w,clue,cat])=>({w,clue,cat}));
+
+// Obscure Scholar: [label, points, ...extra aliases]
+const OBSCURE=[
+{cat:"china",q:"Name an invention or innovation from ancient China.",a:[
+["Paper",10],["Silk",15],["Compass",20,"south pointer","lodestone"],["Gunpowder",10],["Wheelbarrow",55],["Seismoscope",90,"seismograph","earthquake detector"],["Crossbow",45],["Cast iron",70,"iron casting"],["Blast furnace",85],["Kite",40,"kites"],["Lacquer",70],["Sternpost rudder",85,"rudder"],["Chopsticks",35],["Abacus",30],["Acupuncture",45],["Horse collar",90,"breast strap harness","harness"],["Iron plough",75,"plough","plow","iron plow"],["Umbrella",60],["Porcelain",40],["Tea",35]]},
+{cat:"china",q:"Name a dynasty that ruled China.",a:[
+["Qin",15],["Han",15],["Ming",15],["Tang",20],["Shang",30],["Zhou",30,"chou"],["Song",35,"sung"],["Qing",40,"ching","manchu"],["Yuan",50,"mongol"],["Xia",60,"hsia"],["Sui",75],["Jin",85,"chin"]]},
+{cat:"china",q:"Name something traded along the Silk Road.",a:[
+["Silk",5],["Spices",20,"spice"],["Gold",35],["Tea",40],["Porcelain",45],["Horses",50,"horse"],["Silver",50],["Jade",55],["Paper",55],["Gems",60,"jewels","gemstones","precious stones"],["Ivory",65],["Cotton",65],["Glass",70],["Incense",70,"perfume","frankincense"],["Wool",75],["Furs",75,"fur"],["Buddhism",80,"religion","ideas","religions"],["Grapes",90,"grape"]]},
+{cat:"china",q:"Name a value or idea taught by Confucius.",a:[
+["Respect",15,"respect elders","respect for elders"],["Filial piety",30,"filial","xiao","respect parents"],["Education",25,"learning","study"],["Loyalty",30],["Harmony",35],["Honesty",40,"trust","trustworthiness"],["Ancestor worship",40,"ancestors","honour ancestors","ancestor veneration"],["Hard work",45],["Kindness",50,"ren","benevolence","humaneness"],["Ritual",70,"li","propriety","manners"],["Five relationships",75,"five relations"],["Golden rule",80,"reciprocity","shu"],["Junzi",85,"gentleman","superior person","noble person"],["Righteousness",85,"yi"]]},
+{cat:"china",q:"Name something found in Qin Shi Huang's tomb complex.",a:[
+["Terracotta warriors",5,"warriors","soldiers","terracotta army","clay soldiers"],["Horses",25,"clay horses"],["Chariots",35,"bronze chariots","chariot"],["Weapons",40,"swords","spears","bronze weapons"],["Archers",50,"kneeling archers"],["Crossbows",55,"crossbow"],["Mercury",60,"rivers of mercury"],["Officials",75,"civil officials"],["Stone armour",80,"armour","armor"],["Acrobats",85,"acrobat"],["Musicians",85],["Bronze birds",90,"cranes","waterbirds","bronze cranes"]]},
+{cat:"china",q:"Name a social group in ancient Chinese society.",a:[
+["Emperor",10,"emperors"],["Peasants",15,"farmers","peasant"],["Soldiers",30],["Kings",30,"king"],["Nobles",25,"nobility","aristocrats"],["Merchants",35,"traders"],["Scholars",40,"scholar officials"],["Artisans",45,"craftsmen","craftspeople"],["Officials",50,"bureaucrats"],["Slaves",55],["Eunuchs",75],["Shi",90]]},
+{cat:"china",q:"Name a natural feature of China.",a:[
+["Yellow River",10,"huang he","huanghe"],["Yangtze",15,"yangtze river","chang jiang"],["Himalayas",30],["Gobi Desert",35,"gobi"],["Mount Everest",45,"everest"],["Pacific Ocean",55,"pacific"],["Tibetan Plateau",60,"tibet"],["Yellow Sea",65],["North China Plain",75],["Taklamakan Desert",80,"taklamakan","taklimakan"],["Loess Plateau",85,"loess"],["Pearl River",85],["Mount Tai",90,"tai shan","taishan"],["Kunlun Mountains",95,"kunlun"]]},
+{cat:"china",q:"Name something ancient Chinese people wrote on or wrote with.",a:[
+["Paper",15],["Ink",20],["Brush",25,"brushes","calligraphy brush"],["Oracle bones",30,"bones"],["Silk",40],["Bamboo strips",50,"bamboo","bamboo slips"],["Turtle shells",55,"shells","tortoise shells"],["Wooden tablets",60,"wood","wooden slips"],["Stone",65,"stone tablets"],["Bronze vessels",70,"bronze"],["Inkstone",85,"ink stone"]]},
+{cat:"other",q:"Name a god or goddess of ancient Egypt.",a:[
+["Anubis",10],["Ra",15,"re","amun ra"],["Osiris",20],["Horus",20],["Isis",25],["Set",40,"seth"],["Bastet",50,"bast"],["Thoth",55],["Amun",60],["Hathor",65],["Sobek",70],["Maat",75],["Sekhmet",75],["Nut",80],["Aten",80],["Ptah",85],["Geb",85]]},
+{cat:"other",q:"Name something the ancient Romans built.",a:[
+["Roads",10],["Colosseum",15],["Aqueducts",20],["Baths",30,"bath houses","thermae"],["Temples",40],["Arches",45,"triumphal arches"],["Bridges",45],["Amphitheatres",50,"amphitheaters"],["Concrete",50],["Sewers",55,"cloaca maxima"],["Hadrian's Wall",60,"hadrians wall"],["Forums",60,"forum"],["Pantheon",65],["Circus Maximus",75],["Lighthouses",85]]},
+{cat:"local",q:"Name evidence of First Nations people's deep time history in Australia.",a:[
+["Rock art",10,"cave paintings","paintings","rock paintings"],["Stone tools",25,"tools","axes"],["Lake Mungo",30,"mungo","mungo man","mungo lady"],["Oral histories",40,"stories","oral history","dreaming stories"],["Fish traps",45],["Middens",55,"shell middens","midden"],["Songlines",60],["Eel traps",65],["Fire-stick farming",65,"cultural burning","firestick farming"],["Budj Bim",70],["Scar trees",70,"canoe trees","scarred trees"],["Brewarrina fish traps",75,"brewarrina","baiame's ngunnhu"],["Grinding stones",75,"grindstones"],["Hearths",80,"campfires","fireplaces"],["Madjedbebe",85]]},
+{cat:"local",q:"Name a source of fresh water.",a:[
+["Rain",10,"rainfall"],["Rivers",10,"river"],["Lakes",15,"lake"],["Dams",25,"reservoirs"],["Rainwater tanks",35,"tanks","water tanks"],["Groundwater",40,"bores","wells"],["Snow",40],["Glaciers",45,"glacier"],["Ice caps",50,"ice sheets","polar ice"],["Aquifers",55,"great artesian basin"],["Springs",55],["Desalination",65],["Recycled water",70],["Wetlands",70],["Billabongs",80],["Soaks",90,"rock holes","gnamma holes"]]},
+{cat:"local",q:"Name something that makes a place liveable.",a:[
+["Schools",15],["Hospitals",15,"healthcare","health care","doctors"],["Shops",20],["Parks",25],["Transport",30,"public transport","buses","trains"],["Jobs",30,"employment"],["Housing",30,"houses","homes"],["Safety",35,"low crime"],["Green space",45,"trees"],["Clean air",50],["Community",55,"friends","family"],["Clean water",60,"water"],["Climate",65,"weather"],["Internet",70],["Libraries",75],["Cultural places",85,"sacred sites"]]},
+{cat:"local",q:"Name a feature of Australia's democracy.",a:[
+["Voting",10,"vote","votes"],["Elections",15],["Parliament",20],["Prime Minister",30],["Constitution",40],["Senate",45],["Free speech",50,"freedom of speech"],["House of Representatives",50,"house of reps"],["Compulsory voting",55],["High Court",65],["Referendum",70,"referendums"],["Secret ballot",70],["Rule of law",75],["Separation of powers",80],["Preferential voting",85],["Governor-General",85,"governor general"]]},
+{cat:"compare",q:"Name something both Han China and the Roman Empire had.",a:[
+["Emperors",15,"emperor"],["Armies",20,"soldiers"],["Roads",25],["Walls",30,"defensive walls"],["Coins",50,"money","currency"],["Taxes",55],["Slaves",60],["Laws",60],["Canals",70],["Census",85],["Bureaucracy",90,"officials"]]}
+];
+
+// Closest Guess: type 'year' (negative = BCE) or 'qty'
+const FERMI=[
+{cat:"china",q:"In what year did Qin Shi Huang unify China?",type:"year",a:-221,scale:400,fact:"221 BCE. He ended the Warring States period and called himself the First Emperor."},
+{cat:"china",q:"About how many terracotta warriors are thought to be buried near Qin Shi Huang's tomb?",type:"qty",a:8000,unit:"figures",fact:"Around 8,000 figures, though most have not yet been dug up."},
+{cat:"china",q:"How long is the Great Wall, counting all its sections (in km)?",type:"qty",a:21196,unit:"km",fact:"A 2012 Chinese survey measured 21,196 km across all walls built by different dynasties."},
+{cat:"china",q:"How long is the Yangtze River (in km)?",type:"qty",a:6300,unit:"km",fact:"About 6,300 km, making it the longest river in Asia."},
+{cat:"china",q:"In what year did Cai Lun present his improved paper to the Han emperor?",type:"year",a:105,scale:400,fact:"105 CE. Earlier forms of paper existed, but his method made it practical."},
+{cat:"china",q:"How many years did the Zhou dynasty last?",type:"qty",a:790,unit:"years",fact:"About 790 years (1046–256 BCE), the longest of any Chinese dynasty."},
+{cat:"china",q:"How many years did the Qin dynasty last?",type:"qty",a:15,unit:"years",fact:"Only 15 years (221–206 BCE). Harsh rule led to rebellion soon after Qin Shi Huang died."},
+{cat:"china",q:"In what year was Confucius born?",type:"year",a:-551,scale:400,fact:"551 BCE, in the state of Lu, during the Zhou dynasty."},
+{cat:"china",q:"The Han census of 2 CE counted how many million people?",type:"qty",a:57.7,unit:"million",fact:"About 57.7 million people, one of the earliest large censuses in history."},
+{cat:"china",q:"How many characters were in the Shuowen Jiezi, a Han-era dictionary?",type:"qty",a:9353,unit:"characters",fact:"9,353 characters, organised by 540 'radicals' (character parts)."},
+{cat:"china",q:"According to the historian Sima Qian, how many workers built Qin Shi Huang's tomb?",type:"qty",a:700000,unit:"workers",fact:"Sima Qian wrote that over 700,000 workers were used."},
+{cat:"china",q:"In what year did Emperor Wu send Zhang Qian west?",type:"year",a:-138,scale:300,fact:"138 BCE. His journeys helped open the routes we now call the Silk Road."},
+{cat:"china",q:"How many major states fought in the Warring States period?",type:"qty",a:7,unit:"states",spread:.6,fact:"Seven: Qin, Chu, Qi, Yan, Han, Zhao and Wei. Qin conquered the rest."},
+{cat:"china",q:"Roughly how long was the Silk Road network from Chang'an to the Mediterranean (in km)?",type:"qty",a:6400,unit:"km",fact:"About 6,400 km, though traders rarely travelled the whole way."},
+{cat:"china",q:"How long is the Huang He (Yellow River) in km?",type:"qty",a:5464,unit:"km",fact:"About 5,464 km. It is China's second-longest river."},
+{cat:"other",q:"How tall was the Great Pyramid of Giza when built (in metres)?",type:"qty",a:146,unit:"m",fact:"About 146 m. It was the tallest human-made structure for nearly 4,000 years."},
+{cat:"other",q:"In what year, according to legend, was Rome founded?",type:"year",a:-753,scale:400,fact:"753 BCE, by Romulus according to Roman tradition."},
+{cat:"other",q:"About how many spectators could the Colosseum hold?",type:"qty",a:50000,unit:"people",fact:"Around 50,000 spectators."},
+{cat:"other",q:"How long is the Nile River (in km)?",type:"qty",a:6650,unit:"km",fact:"About 6,650 km. It is usually listed as the world's longest river."},
+{cat:"local",q:"For at least how many years have First Nations people lived in Australia?",type:"qty",a:65000,unit:"years",fact:"At least 65,000 years, based on evidence from Madjedbebe in Arnhem Land."},
+{cat:"local",q:"What percentage of Earth's water is fresh water?",type:"qty",a:2.5,unit:"%",fact:"Only about 2.5%, and most of that is frozen in ice caps and glaciers."},
+{cat:"local",q:"How many senators are in the Australian Senate?",type:"qty",a:76,unit:"senators",spread:.6,fact:"76: twelve from each state and two from each territory."},
+{cat:"local",q:"In what year did voting become compulsory in Australian federal elections?",type:"year",a:1924,scale:100,fact:"1924. Australia was one of the first countries to make voting compulsory."},
+{cat:"local",q:"For at least how many years have the Gunditjmara used the Budj Bim eel traps?",type:"qty",a:6600,unit:"years",fact:"At least 6,600 years, which is older than Egypt's pyramids."},
+{cat:"local",q:"Lake Mungo remains are about how many years old?",type:"qty",a:42000,unit:"years",fact:"About 42,000 years old. Mungo Man and Mungo Lady are among the oldest human remains found in Australia."},
+{cat:"compare",q:"How many years passed between Qin Shi Huang unifying China and Julius Caesar's death?",type:"qty",a:177,unit:"years",fact:"177 years (221 BCE to 44 BCE)."},
+{cat:"compare",q:"About how far is Xi'an (Han capital Chang'an) from Rome, in a straight line (in km)?",type:"qty",a:8100,unit:"km",fact:"About 8,100 km. Han China and Rome knew of each other mostly through traders in between."}
+];
+
+const CONNECT=[
+{cat:"china",groups:[
+ {name:"Chinese dynasties",items:["Shang","Zhou","Qin","Han"]},
+ {name:"Ancient Chinese inventions",items:["Paper","Compass","Wheelbarrow","Seismoscope"]},
+ {name:"Chinese philosophies",items:["Confucianism","Daoism","Legalism","Mohism"]},
+ {name:"Natural features of China",items:["Huang He","Yangtze","Gobi","Himalayas"]}]},
+{cat:"china",groups:[
+ {name:"Silk Road goods",items:["Jade","Horses","Spices","Glass"]},
+ {name:"Things Qin Shi Huang standardised",items:["Coins","Weights","Axle widths","Script"]},
+ {name:"Confucian values",items:["Filial piety","Ren","Li","Loyalty"]},
+ {name:"Found in Qin's tomb complex",items:["Terracotta warriors","Bronze chariots","Acrobat figures","Stone armour"]}]},
+{cat:"china",groups:[
+ {name:"The four occupations",items:["Scholars","Farmers","Artisans","Merchants"]},
+ {name:"Han dynasty people",items:["Liu Bang","Emperor Wu","Zhang Qian","Cai Lun"]},
+ {name:"Ancient Chinese writing materials",items:["Oracle bones","Bamboo strips","Silk","Brush"]},
+ {name:"Daoist ideas",items:["Yin and yang","The Dao","Wu wei","Laozi"]}]},
+{cat:"china",groups:[
+ {name:"Famous ancient Chinese people",items:["Confucius","Sima Qian","Fu Hao","Zhang Heng"]},
+ {name:"Ancient Chinese capitals",items:["Chang'an","Luoyang","Anyang","Xianyang"]},
+ {name:"Warring States",items:["Chu","Qi","Zhao","Yan"]},
+ {name:"Grown by ancient Chinese farmers",items:["Millet","Rice","Soybeans","Mulberry"]}]},
+{cat:"other",groups:[
+ {name:"Ancient Egypt",items:["Pharaoh","Papyrus","Nile","Mummy"]},
+ {name:"Ancient Greece",items:["Agora","Polis","Sparta","Olympics"]},
+ {name:"Ancient Rome",items:["Senate","Legion","Aqueduct","Colosseum"]},
+ {name:"Ancient China",items:["Mandate of Heaven","Oracle bones","Great Wall","Silk"]}]},
+{cat:"local",groups:[
+ {name:"Sources of fresh water",items:["Aquifer","Glacier","River","Rainwater"]},
+ {name:"Deep time sites in Australia",items:["Lake Mungo","Budj Bim","Madjedbebe","Brewarrina"]},
+ {name:"Parts of Australia's federal system",items:["Senate","House of Reps","High Court","Governor-General"]},
+ {name:"Liveability factors",items:["Transport","Safety","Green space","Health services"]}]},
+{cat:"compare",groups:[
+ {name:"Rivers of ancient civilisations",items:["Nile","Tiber","Euphrates","Yangtze"]},
+ {name:"Ancient writing systems",items:["Hieroglyphs","Oracle bone script","Cuneiform","Latin"]},
+ {name:"Ancient rulers' titles",items:["Pharaoh","Emperor","Caesar","Archon"]},
+ {name:"Ancient monuments",items:["Pyramids","Terracotta Army","Parthenon","Pantheon"]}]}
+];
+
+const TIMELINE=[
+{cat:"china",t:"Millet farming begins along the Huang He",y:-7000,d:"c. 7000 BCE"},
+{cat:"china",t:"The Shang dynasty begins",y:-1600,d:"c. 1600 BCE"},
+{cat:"china",t:"Earliest known oracle bone writing",y:-1250,d:"c. 1250 BCE"},
+{cat:"china",t:"The Zhou overthrow the Shang",y:-1046,d:"1046 BCE"},
+{cat:"china",t:"Confucius is born",y:-551,d:"551 BCE"},
+{cat:"china",t:"The Warring States period begins",y:-475,d:"475 BCE"},
+{cat:"china",t:"Qin Shi Huang unifies China",y:-221,d:"221 BCE"},
+{cat:"china",t:"The Han dynasty is founded",y:-206,d:"206 BCE"},
+{cat:"china",t:"Zhang Qian sets out for the west",y:-138,d:"138 BCE"},
+{cat:"china",t:"Cai Lun presents improved paper",y:105,d:"105 CE"},
+{cat:"china",t:"Zhang Heng builds his seismoscope",y:132,d:"132 CE"},
+{cat:"china",t:"The Han dynasty ends",y:220,d:"220 CE"},
+{cat:"other",t:"The Great Pyramid of Giza is built",y:-2560,d:"c. 2560 BCE"},
+{cat:"other",t:"Tutankhamun dies",y:-1323,d:"c. 1323 BCE"},
+{cat:"other",t:"The first Olympic Games are held",y:-776,d:"776 BCE"},
+{cat:"other",t:"Rome is founded (legend)",y:-753,d:"753 BCE"},
+{cat:"other",t:"Democracy begins in Athens",y:-508,d:"508 BCE"},
+{cat:"other",t:"Julius Caesar is assassinated",y:-44,d:"44 BCE"},
+{cat:"other",t:"The Colosseum opens",y:80,d:"80 CE"},
+{cat:"local",t:"First Nations people are living in Australia",y:-63000,d:"at least 65,000 years ago"},
+{cat:"local",t:"Mungo Lady is buried at Lake Mungo",y:-40000,d:"c. 42,000 years ago"},
+{cat:"local",t:"Rising seas separate Tasmania from the mainland",y:-8000,d:"c. 10,000 years ago"},
+{cat:"local",t:"Budj Bim eel traps are in use",y:-4600,d:"at least 6,600 years ago"},
+{cat:"local",t:"Australian Federation",y:1901,d:"1901"},
+{cat:"local",t:"Voting becomes compulsory in federal elections",y:1924,d:"1924"},
+{cat:"local",t:"All First Nations people gain the federal vote",y:1962,d:"1962"}
+];
+
+const WHO=[
+{cat:"china",a:["Qin Shi Huang","qin shi huangdi","shi huangdi","ying zheng","first emperor","the first emperor"],clues:["I made coins, weights and even cart axle widths the same everywhere.","Scholars who criticised me were punished, and many books were burned.","I was born Ying Zheng in 259 BCE.","Thousands of clay soldiers were made to guard my tomb.","I was the first emperor of a unified China."]},
+{cat:"china",a:["Confucius","kongzi","kong fuzi","kong qiu"],clues:["My followers collected my sayings after I died.","I lived from about 551 to 479 BCE in the state of Lu.","I taught that a good ruler leads by moral example.","I stressed filial piety: respect for parents and ancestors.","In Chinese my name is Kong Fuzi, 'Master Kong'."]},
+{cat:"china",a:["Laozi","lao tzu","lao tse","laotze","lao zi"],clues:["Legend says I rode west on an ox and was never seen again.","The book linked to me is the Dao De Jing.","I taught wu wei, which means acting without forcing.","Yin and yang are part of the beliefs connected to me.","I'm known as the founder of Daoism."]},
+{cat:"china",a:["Cai Lun","tsai lun"],clues:["I was a court official of the Han dynasty.","I reported my work to the emperor in 105 CE.","I used tree bark, hemp, old rags and fishing nets.","What I made was cheaper than silk and lighter than bamboo.","I'm credited with improving paper-making."]},
+{cat:"china",a:["Zhang Qian","chang chien"],clues:["I was captured by the Xiongnu and held for about ten years.","Emperor Wu sent me west in 138 BCE.","I brought back news of 'heavenly horses' in Central Asia.","My journeys opened Han contact with lands to the west.","I'm often called the father of the Silk Road."]},
+{cat:"china",a:["Sima Qian","ssu ma chien","szuma chien"],clues:["I served as Grand Historian at the Han court.","I was harshly punished for defending a general, but kept writing.","My book covers about 2,000 years of history.","Much of what we know about Qin Shi Huang comes from me.","I wrote the Shiji, the Records of the Grand Historian."]},
+{cat:"china",a:["Fu Hao","lady hao","fu hao queen"],clues:["My tomb was found unlooted at Anyang in 1976.","More than 1,000 objects, including bronzes and jade, were buried with me.","Oracle bones mention me leading thousands of soldiers.","I was a wife of King Wu Ding.","I was a Shang queen, priestess and military general."]},
+{cat:"china",a:["Great Wall","great wall of china","the great wall"],clues:["Parts of me are rammed earth, others stone and brick.","A 2012 survey measured all my sections at over 21,000 km.","Qin Shi Huang linked older sections of me together.","I was built to defend against raiders from the northern steppe.","I'm the longest structure ever built by people."]},
+{cat:"china",a:["Terracotta Army","terracotta warriors","terracotta soldiers","clay army"],clues:["Farmers digging a well found me in 1974.","I'm near the city of Xi'an.","My figures have different faces, hairstyles and armour.","I was originally painted in bright colours.","I'm thousands of clay soldiers guarding an emperor's tomb."]},
+{cat:"china",a:["Huang He","yellow river","huanghe","hwang ho"],clues:["I carry more silt than almost any river on Earth.","Early millet farming began along my banks.","My floods killed so many that I'm called 'China's Sorrow'.","Loess soil gives me my colour.","My name means Yellow River."]},
+{cat:"china",a:["Oracle bones","oracle bone","dragon bones"],clues:["Most of us are ox shoulder blades or turtle shells.","Heat was applied to us until we cracked.","Shang kings asked their ancestors questions using us.","We carry the earliest known Chinese writing.","Diviners read our cracks to predict the future."]},
+{cat:"china",a:["Silk Road","silk roads","silk route"],clues:["I was not one road but a network of routes.","Ideas and religions like Buddhism travelled along me.","Camel caravans crossed deserts like the Taklamakan on me.","I linked Han China to Central Asia, Persia and Rome.","I'm named after China's most famous export."]},
+{cat:"china",a:["Mandate of Heaven","tianming","the mandate of heaven"],clues:["The Zhou used me to explain why they overthrew the Shang.","Floods, famines and earthquakes were signs I'd been lost.","I could pass from one ruling family to another.","Rebels could claim a bad ruler no longer had me.","I'm the belief that heaven gave rulers the right to rule."]},
+{cat:"other",a:["Tutankhamun","king tut","tutankhamen","tut"],clues:["I died at about 19 years old.","Howard Carter found my tomb in 1922.","My tomb was packed with over 5,000 objects.","My gold death mask is world famous.","I'm the boy pharaoh of Egypt."]},
+{cat:"other",a:["Julius Caesar","caesar","gaius julius caesar"],clues:["I was once captured by pirates.","I crossed the Rubicon river with my army in 49 BCE.","I made myself dictator of Rome.","I was stabbed by senators in 44 BCE.","My name later became a title meaning 'emperor'."]},
+{cat:"other",a:["Sparta","lacedaemon"],clues:["I'm a city in southern Greece.","My people relied on helots, a group forced to farm for us.","Boys left home at age seven for military training.","Three hundred of my soldiers fought at Thermopylae.","I'm the Greek city-state famous for warriors."]},
+{cat:"local",a:["Lake Mungo","mungo","lake mungo national park"],clues:["I'm a dry lake bed in south-western New South Wales.","I'm part of the Willandra Lakes World Heritage Area.","Wind erosion uncovered ancient remains in my sand dunes.","A woman was cremated here about 42,000 years ago.","Mungo Man and Mungo Lady were found at me."]},
+{cat:"local",a:["Budj Bim","budj bim cultural landscape","lake condah"],clues:["I'm in south-west Victoria.","I formed from a volcano that erupted over 30,000 years ago.","The Gunditjmara people built channels and weirs here.","I became World Heritage listed in 2019.","My eel traps are at least 6,600 years old."]},
+{cat:"local",a:["Great Artesian Basin","artesian basin","the great artesian basin"],clues:["I lie under about one-fifth of Australia.","My water can be over a million years old.","Bores tap into me to supply outback towns and stations.","Queensland sits on top of much of me.","I'm one of the largest underground water systems in the world."]},
+{cat:"local",a:["Murray River","murray","the murray","river murray"],clues:["I form much of the border between New South Wales and Victoria.","Paddle steamers once carried wool along me.","I'm part of a basin covering about a million square km.","I reach the sea in South Australia.","I'm Australia's longest river."]}
+];
+
+const ODD=[
+{cat:"china",o:["Shang","Zhou","Qin","Sparta"],x:"Sparta",why:"Sparta was a Greek city-state. The others are Chinese dynasties."},
+{cat:"china",o:["Paper","Seismoscope","Wheelbarrow","Aqueduct"],x:"Aqueduct",why:"Aqueducts are famous Roman structures. The others are ancient Chinese inventions."},
+{cat:"china",o:["Confucius","Laozi","Han Feizi","Socrates"],x:"Socrates",why:"Socrates was a Greek philosopher. The others were Chinese thinkers."},
+{cat:"china",o:["Huang He","Yangtze","Wei River","Tiber"],x:"Tiber",why:"The Tiber flows through Rome. The others are rivers in China."},
+{cat:"china",o:["Filial piety","Ren","Li","Wu wei"],x:"Wu wei",why:"Wu wei is a Daoist idea. The others are Confucian values."},
+{cat:"china",o:["Oracle bones","Bamboo strips","Silk","Papyrus"],x:"Papyrus",why:"Papyrus was Egyptian. The others were writing surfaces in ancient China."},
+{cat:"china",o:["Terracotta warriors","Bronze chariots","Acrobat figures","Canopic jars"],x:"Canopic jars",why:"Canopic jars held organs in Egyptian burials. The others were found in Qin Shi Huang's tomb complex."},
+{cat:"china",o:["Silk","Jade","Horses","Potatoes"],x:"Potatoes",why:"Potatoes come from the Americas and weren't known in Asia until much later. The others were Silk Road goods."},
+{cat:"china",o:["Emperor","Scholar-officials","Peasants","Senators"],x:"Senators",why:"Senators belonged to Rome. The others were part of ancient Chinese society."},
+{cat:"china",o:["Legalism","Daoism","Confucianism","Stoicism"],x:"Stoicism",why:"Stoicism began in Greece. The others are Chinese philosophies."},
+{cat:"china",o:["Qin Shi Huang","Liu Bang","Emperor Wu","Ramesses II"],x:"Ramesses II",why:"Ramesses II was an Egyptian pharaoh. The others were Chinese emperors."},
+{cat:"china",o:["Millet","Rice","Soybeans","Maize"],x:"Maize",why:"Maize (corn) is from the Americas. The others were grown in ancient China."},
+{cat:"china",o:["Chang'an","Luoyang","Anyang","Athens"],x:"Athens",why:"Athens is in Greece. The others were capitals of ancient Chinese dynasties."},
+{cat:"china",o:["Gobi","Taklamakan","Himalayas","Sahara"],x:"Sahara",why:"The Sahara is in Africa. The others are natural barriers around China."},
+{cat:"china",o:["Mandate of Heaven","Ancestor veneration","Yin and yang","Mummification"],x:"Mummification",why:"Mummification belongs to ancient Egypt. The others are ancient Chinese beliefs."},
+{cat:"other",o:["Pharaoh","Papyrus","Pyramid","Pagoda"],x:"Pagoda",why:"Pagodas are tiered towers from Asia. The others belong to ancient Egypt."},
+{cat:"other",o:["Senate","Legion","Forum","Agora"],x:"Agora",why:"The agora was Greek. The others belong to ancient Rome."},
+{cat:"local",o:["Lake Mungo","Budj Bim","Madjedbebe","Stonehenge"],x:"Stonehenge",why:"Stonehenge is in England. The others are deep time sites in Australia."},
+{cat:"local",o:["Aquifer","Glacier","River","Ocean"],x:"Ocean",why:"Ocean water is salty. The others are sources of fresh water."},
+{cat:"local",o:["Transport","Safety","Green space","Pollution"],x:"Pollution",why:"Pollution lowers liveability. The others raise it."},
+{cat:"compare",o:["Voting","Parliament","Constitution","Mandate of Heaven"],x:"Mandate of Heaven",why:"The Mandate of Heaven justified emperors in China. The others are features of Australian democracy."},
+{cat:"compare",o:["Great Wall","Hadrian's Wall","Pyramids","Walls of Babylon"],x:"Pyramids",why:"The pyramids were tombs. The others were defensive walls."}
+];
+
+const TF=[
+{cat:"china",s:"The Great Wall can be seen from the Moon with the naked eye.",t:false,why:"Myth. It's long but narrow, and astronauts confirm it can't be seen from the Moon."},
+{cat:"china",s:"Qin Shi Huang ordered many books to be burned.",t:true,why:"Fact. Sima Qian records the burning of books in 213 BCE, especially works that disagreed with Legalism."},
+{cat:"china",s:"The terracotta warriors were originally painted in bright colours.",t:true,why:"Fact. Traces of paint survive, but much of it flakes off quickly when exposed to air."},
+{cat:"china",s:"Confucius wrote the Analects himself.",t:false,why:"Myth. His followers collected his sayings after his death."},
+{cat:"china",s:"The Silk Road was one single road.",t:false,why:"Myth. It was a network of land and sea routes."},
+{cat:"china",s:"Oracle bones were used to ask questions of ancestors.",t:true,why:"Fact. Shang diviners heated bones and shells and read the cracks as answers."},
+{cat:"china",s:"The Han dynasty came before the Qin dynasty.",t:false,why:"Myth. The Qin (221–206 BCE) came first, then the Han (206 BCE–220 CE)."},
+{cat:"china",s:"The Huang He is called 'China's Sorrow' because of its deadly floods.",t:true,why:"Fact. Its floods have killed millions of people over the centuries."},
+{cat:"china",s:"Silk is made from the cocoons of silkworms.",t:true,why:"Fact. Silkworms spin cocoons of a single fine thread that is unwound and woven."},
+{cat:"china",s:"The whole Great Wall was built by Qin Shi Huang.",t:false,why:"Myth. He linked earlier walls. Most of what tourists see today was built by the Ming dynasty."},
+{cat:"china",s:"Laozi founded Legalism.",t:false,why:"Myth. Laozi is linked to Daoism. Legalism is linked to thinkers like Han Feizi."},
+{cat:"china",s:"Zhang Heng invented a device that could detect distant earthquakes.",t:true,why:"Fact. His seismoscope from 132 CE dropped a bronze ball to show the direction of a quake."},
+{cat:"china",s:"The Mandate of Heaven meant a ruler could never lose power.",t:false,why:"Myth. Disasters and bad rule were seen as signs the Mandate had been lost."},
+{cat:"china",s:"Most people in ancient China were farmers.",t:true,why:"Fact. Peasant farmers made up the large majority of the population."},
+{cat:"china",s:"Merchants were the most respected group in Confucian society.",t:false,why:"Myth. Merchants were ranked last of the four occupations, below scholars, farmers and artisans."},
+{cat:"other",s:"Egyptian embalmers removed the brain through the nose.",t:true,why:"Fact. They used a hooked tool through the nose."},
+{cat:"other",s:"Gladiator fights always ended in death.",t:false,why:"Myth. Gladiators were expensive to train, and many fights ended without a death."},
+{cat:"other",s:"Women could vote in Athenian democracy.",t:false,why:"Myth. Only adult male citizens could vote."},
+{cat:"local",s:"First Nations people have lived in Australia for at least 65,000 years.",t:true,why:"Fact. Evidence from Madjedbebe in Arnhem Land supports this date."},
+{cat:"local",s:"Most of Earth's water is fresh water.",t:false,why:"Myth. About 97.5% is salt water."},
+{cat:"local",s:"Voting is compulsory in Australian federal elections for citizens aged 18 and over.",t:true,why:"Fact. It has been compulsory since 1924."},
+{cat:"local",s:"The Budj Bim eel traps are older than Egypt's pyramids.",t:true,why:"Fact. They're at least 6,600 years old. The Great Pyramid is about 4,500."},
+{cat:"compare",s:"Han China and the Roman Empire existed at the same time.",t:true,why:"Fact. Both were large empires in the 1st and 2nd centuries CE, linked by trade through the Silk Road."}
+];
+
+/* ============ ENGINE ============ */
+const KEY="dynasty-daily-v1";
+let store={days:{},practice:0,big:false};
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&typeof s==="object")store=Object.assign(store,s)}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}}
+const S={mode:"daily"};
+let keyHandler=null;
+
+function today(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function hashStr(s){let h=1779033703^s.length;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}return h>>>0}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function rngFor(id){return S.mode==="daily"?mulberry(hashStr(today()+":"+id)):Math.random}
+function pick(pool,n,rng){
+  const copies={};pool.forEach(it=>{(copies[it.cat]=copies[it.cat]||[]).push(it)});
+  const out=[];
+  while(out.length<n){
+    const cats=Object.keys(copies).filter(k=>copies[k].length);if(!cats.length)break;
+    const tot=cats.reduce((s,k)=>s+(CATW[k]||.05),0);let r=rng()*tot,c=cats[cats.length-1];
+    for(const k of cats){r-=CATW[k]||.05;if(r<=0){c=k;break}}
+    const arr=copies[c];out.push(arr.splice(Math.floor(rng()*arr.length),1)[0]);
+  }
+  return out;
+}
+function shuffle(a,rng){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function norm(s){return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/^the /,"").replace(/[^a-z0-9]/g,"")}
+function lev(a,b){if(Math.abs(a.length-b.length)>2)return 9;const d=Array.from({length:a.length+1},(_,i)=>[i]);for(let j=1;j<=b.length;j++)d[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length]}
+function matches(input,aliases){
+  const g=norm(input);if(!g)return false;
+  for(const al of aliases){const a=norm(al);if(!a)continue;
+    if(g===a||g+"s"===a||g===a+"s"||g+"es"===a)return true;
+    const tol=a.length>=9?2:a.length>=5?1:0;if(tol&&lev(g,a)<=tol)return true;}
+  return false;
+}
+function fmtNum(n){return Number(n).toLocaleString("en-AU",{maximumFractionDigits:2})}
+function fmtYear(y){return y<0?`${fmtNum(-y)} BCE`:`${y} CE`}
+const $=s=>document.querySelector(s);
+const app=document.getElementById("app");
+
+function record(id,score,max,line){
+  if(S.mode==="daily"){const d=today();store.days[d]=store.days[d]||{};store.days[d][id]={score,max,line}}
+  else store.practice=(store.practice||0)+score;
+  save();
+}
+function streak(){let n=0;const d=new Date();if(!store.days[today()])d.setDate(d.getDate()-1);
+  for(;;){const k=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");if(store.days[k]&&Object.keys(store.days[k]).length){n++;d.setDate(d.getDate()-1)}else break}return n}
+
+const ICON={
+dynastle:'<path d="M7 5v22M13 5v22M19 5v22M25 5v22M4 11h24M4 21h24"/>',
+obscure:'<path d="M8 7h16M8 25h16M8 7a3 3 0 0 0 0 6M24 7a3 3 0 0 1 0 6M8 19a3 3 0 0 0 0 6M24 19a3 3 0 0 1 0 6M9 13v6M23 13v6M13 14h6M13 18h4"/>',
+closest:'<circle cx="16" cy="16" r="12"/><rect x="12" y="12" width="8" height="8"/>',
+groups:'<rect x="5" y="5" width="9" height="9" rx="1"/><rect x="18" y="5" width="9" height="9" rx="1"/><rect x="5" y="18" width="9" height="9" rx="1"/><rect x="18" y="18" width="9" height="9" rx="1"/>',
+timeline:'<path d="M3 16h26"/><circle cx="7" cy="16" r="2.5"/><circle cx="16" cy="16" r="2.5"/><circle cx="25" cy="16" r="2.5"/><path d="M7 9v4M16 19v4M25 9v4"/>',
+who:'<rect x="5" y="5" width="22" height="22" rx="2"/><path d="M12.5 12.5a3.5 3.5 0 1 1 5 3.2c-1 .5-1.5 1.2-1.5 2.3v.5"/><path d="M16 22.5v.01"/>',
+odd:'<circle cx="9" cy="9" r="4"/><circle cx="23" cy="9" r="4"/><circle cx="9" cy="23" r="4"/><rect x="19" y="19" width="8" height="8"/>',
+place:'<path d="M3 25h26"/><circle cx="7" cy="25" r="2"/><circle cx="25" cy="25" r="2"/><path d="M16 25v-6"/><circle cx="16" cy="12" r="5"/>',
+silk:'<path d="M4 25c7 0 6-9 12-9s5-9 12-9"/><circle cx="4" cy="25" r="2.2"/><circle cx="16" cy="16" r="2.2"/><circle cx="28" cy="7" r="2.2"/>',
+mandate:'<circle cx="16" cy="16" r="5"/><path d="M16 4v4M16 24v4M4 16h4M24 16h4M7.5 7.5l2.8 2.8M21.7 21.7l2.8 2.8M7.5 24.5l2.8-2.8M21.7 10.3l2.8-2.8"/>',
+sort:'<path d="M4 13h7v13H4zM12.5 13h7v13h-7zM21 13h7v13h-7zM13 4h6v5h-6z"/>',
+myth:'<circle cx="16" cy="16" r="12"/><path d="M16 4a6 6 0 0 1 0 12a6 6 0 0 0 0 12"/><circle cx="16" cy="10" r="1.3"/><circle cx="16" cy="22" r="1.3"/>'
+};
+const GAMES=[
+{id:"dynastle",name:"Dynastle",desc:"Guess the hidden word in six tries",run:runWordle},
+{id:"obscure",name:"Obscure Scholar",desc:"Rarer correct answers score more",run:runObscure},
+{id:"closest",name:"Closest Guess",desc:"Estimate the number or year",run:runFermi},
+{id:"groups",name:"Four Treasures",desc:"Sort 16 items into four groups",run:runConnect},
+{id:"timeline",name:"Timeline",desc:"Put six events in order",run:runTimeline},
+{id:"who",name:"Who Am I?",desc:"Name it from as few clues as you can",run:runWho},
+{id:"odd",name:"Odd One Out",desc:"Spot the item that doesn't belong",run:runOdd},
+{id:"myth",name:"Myth or Fact",desc:"Bust the myths about the past",run:runMyth},
+{id:"place",name:"Place in Time",desc:"Slot an event into the timeline",run:runPlace},
+{id:"silk",name:"Silk Road Journey",desc:"Lead a caravan from Chang'an to Rome",run:runSilk},
+{id:"mandate",name:"Mandate of Heaven",desc:"Rule as a Han emperor and keep power",run:runMandate},
+{id:"sort",name:"Sort the Scrolls",desc:"Sort each card into the right group",run:runSort}
+];
+
+function home(){
+  if(keyHandler){document.removeEventListener("keydown",keyHandler);keyHandler=null}
+  const d=new Date(),day=store.days[today()]||{};
+  const played=Object.keys(day).length,total=Object.values(day).reduce((s,r)=>s+Math.round(100*r.score/r.max),0);
+  app.innerHTML=`
+  <header class="hero">
+    <div class="head">
+      <div><h1>Dynasty Daily</h1>
+        <p>Twelve quick games for Year 7 Humanities, from the Shang to the Han and beyond.</p></div>
+      <div class="seal" aria-label="Today's date"><div><b>${d.getDate()}</b><span>${d.toLocaleDateString("en-AU",{month:"short"})}</span></div></div>
+    </div>
+    <svg class="ink" viewBox="0 0 800 200" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <circle class="sun" cx="585" cy="58" r="28"/>
+      <path class="birds" d="M430 40q6-6 12 0q6-6 12 0M475 58q4-4 8 0q4-4 8 0"/>
+      <path class="mt3" d="M0 140C80 70 140 105 200 55C260 15 300 95 360 75C420 55 470 5 540 45C600 80 650 55 720 35C760 25 790 55 800 65V200H0Z"/>
+      <path class="mt2" d="M0 170C70 120 120 150 180 110C240 75 290 140 360 120C430 100 480 130 560 100C630 75 700 130 800 110V200H0Z"/>
+      <path class="mt1" d="M0 200V182C100 158 160 188 260 172C360 156 420 192 520 177C620 162 700 188 800 172V200Z"/>
+    </svg>
+  </header>
+  <div class="controls">
+    <div class="seg" role="group" aria-label="Mode">
+      <button data-mode="daily" aria-pressed="${S.mode==="daily"}">Daily</button>
+      <button data-mode="practice" aria-pressed="${S.mode==="practice"}">Practice</button>
+    </div>
+    <button class="chip" id="big" aria-pressed="${!!store.big}">Big screen text</button>
+    <span class="stat">${S.mode==="daily"?`${played}/${GAMES.length} played today · Streak ${streak()} day${streak()===1?"":"s"}`:`Practice points: ${fmtNum(store.practice||0)}`}</span>
+  </div>
+  <nav class="cards" aria-label="Games">
+    ${GAMES.map(g=>{const r=S.mode==="daily"&&day[g.id];return `<button class="card" data-g="${g.id}">
+      ${r?`<span class="done">${r.score}/${r.max}</span>`:""}
+      <span class="emblem"><svg viewBox="0 0 32 32" aria-hidden="true">${ICON[g.id]}</svg></span>
+      <h3>${esc(g.name)}</h3><span class="desc">${esc(g.desc)}</span>
+      <span class="go">${r?"See result":"Play"}</span></button>`}).join("")}
+  </nav>
+  <p class="footnote">${S.mode==="daily"?"Daily puzzles are the same for everyone today and reset at midnight. Switch to Practice for unlimited random rounds.":"Practice gives a fresh random round every time."} Question mix: 65% Ancient China, 15% Egypt, Greece and Rome, 15% deep time history, geography and civics, 5% comparing civilisations.</p>`;
+  app.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{S.mode=b.dataset.mode;home()});
+  $("#big").onclick=()=>{store.big=!store.big;save();applyBig();home()};
+  app.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>openGame(b.dataset.g));
+  window.scrollTo(0,0);
+}
+function applyBig(){if(store.big)document.documentElement.setAttribute("data-big","");else document.documentElement.removeAttribute("data-big")}
+
+function openGame(id){
+  const g=GAMES.find(x=>x.id===id);
+  const done=S.mode==="daily"&&(store.days[today()]||{})[id];
+  if(done){showResult(g,done.score,done.max,done.line,true);return}
+  g.run(g);
+}
+function shell(g,progress,inner){
+  app.innerHTML=`<div class="gtop"><button class="back" id="back">‹ All games</button><span class="progress">${progress||""}</span></div>
+  <h2 class="gtitle" style="margin-bottom:1rem">${esc(g.name)}</h2>${inner}`;
+  $("#back").onclick=home;
+}
+function tag(cat){return `<span class="tag ${cat}">${CATNAME[cat]}</span>`}
+
+function showResult(g,score,max,line,already){
+  if(keyHandler){document.removeEventListener("keydown",keyHandler);keyHandler=null}
+  if(!already)record(g.id,score,max,line);
+  const share=`Dynasty Daily ${S.mode==="daily"?today():"(practice)"}\n${line}`;
+  shell(g,"",`<div class="panel">
+    ${already?`<p class="muted" style="margin-top:0">You've already played today's ${esc(g.name)}.</p>`:""}
+    <div class="big-score">${score} / ${max}</div>
+    <p class="share" id="sh">${esc(share)}</p>
+    <div class="row">
+      <button class="btn" id="copy">Copy result</button>
+      <button class="btn ghost" id="again">${S.mode==="daily"?"Practise this game":"Play again"}</button>
+      <button class="btn ghost" id="home2">All games</button>
+    </div><p id="cmsg" class="muted"></p></div>`);
+  $("#copy").onclick=async()=>{try{await navigator.clipboard.writeText(share);$("#cmsg").textContent="Copied."}catch(e){$("#cmsg").textContent="Select the text above to copy it."}};
+  $("#again").onclick=()=>{S.mode="practice";g.run(g)};
+  $("#home2").onclick=home;
+}
+
+/* ---------- Dynastle ---------- */
+function runWordle(g){
+  const rng=rngFor(g.id);const item=pick(WORDS,1,rng)[0];const T=item.w;const L=T.length;
+  const guesses=[];let cur="",over=false,msg="";const keyState={};
+  const rows=["QWERTYUIOP","ASDFGHJKL","+ZXCVBNM-"];
+  function evalG(gs){const r=Array(L).fill("absent"),c={};for(let i=0;i<L;i++){if(gs[i]===T[i])r[i]="correct";else c[T[i]]=(c[T[i]]||0)+1}for(let i=0;i<L;i++){if(r[i]!=="correct"&&c[gs[i]]>0){r[i]="present";c[gs[i]]--}}return r}
+  const rank={absent:1,present:2,correct:3};
+  function draw(){
+    let grid="";for(let r=0;r<6;r++){const gs=guesses[r];let cells="";
+      for(let i=0;i<L;i++){if(gs){cells+=`<div class="tile ${gs.res[i]}">${gs.w[i]}</div>`}else if(r===guesses.length&&!over){const ch=cur[i]||"";cells+=`<div class="tile ${ch?"filled":""}">${ch}</div>`}else cells+=`<div class="tile"></div>`}
+      grid+=`<div class="wrow" style="grid-template-columns:repeat(${L},auto)">${cells}</div>`}
+    shell(g,`${L} letters`,`${tag(item.cat)}<p class="clue"><b>Clue:</b> ${esc(item.clue)}</p>
+      <div class="wgrid" role="grid" aria-label="Guesses">${grid}</div>
+      <p class="clue muted" id="wmsg" aria-live="assertive">${esc(msg)}</p>
+      <div class="kb">${rows.map(r=>`<div class="kbr">${[...r].map(k=>k==="+"?`<button class="key wide" data-k="ENTER">Enter</button>`:k==="-"?`<button class="key wide" data-k="DEL" aria-label="Delete">Del</button>`:`<button class="key ${keyState[k]||""}" data-k="${k}">${k}</button>`).join("")}</div>`).join("")}</div>`);
+    app.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>press(b.dataset.k));
+  }
+  function press(k){
+    if(over)return;
+    if(k==="ENTER"){
+      if(cur.length!==L){msg=`The word has ${L} letters.`;draw();return}
+      const res=evalG(cur);guesses.push({w:cur,res});
+      [...cur].forEach((ch,i)=>{if(!keyState[ch]||rank[res[i]]>rank[keyState[ch]])keyState[ch]=res[i]});
+      const won=cur===T;cur="";msg="";
+      if(won||guesses.length===6){over=true;
+        const grid=guesses.map(x=>x.res.map(r=>r==="correct"?"🟩":r==="present"?"🟨":"⬛").join("")).join("\n");
+        const score=won?7-guesses.length:0;
+        msg=won?`Solved! ${T}.`:`The word was ${T}.`;draw();
+        setTimeout(()=>showResult(g,score,6,`${g.name} ${won?guesses.length:"X"}/6\n${grid}`),1300);return}
+    }else if(k==="DEL"){cur=cur.slice(0,-1)}
+    else if(/^[A-Z]$/.test(k)&&cur.length<L){cur+=k}
+    draw();
+  }
+  keyHandler=e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;const k=e.key;if(k==="Enter"){e.preventDefault();press("ENTER")}else if(k==="Backspace")press("DEL");else if(/^[a-zA-Z]$/.test(k))press(k.toUpperCase())};
+  document.addEventListener("keydown",keyHandler);
+  draw();
+}
+
+/* ---------- Obscure Scholar ---------- */
+function runObscure(g){
+  const rng=rngFor(g.id);const qs=pick(OBSCURE,5,rng);let i=0,total=0,misses=0;const lines=[];
+  function step(){
+    const q=qs[i];misses=0;
+    shell(g,`Prompt ${i+1} of ${qs.length}`,`<div class="panel">${tag(q.cat)}<p class="prompt">${esc(q.q)}</p>
+      <p class="muted" style="margin-top:-.4rem">Common answers score low. Think of something correct that few people would say.</p>
+      <div class="row"><input class="input" id="ans" autocomplete="off" aria-label="Your answer" placeholder="Type one answer"><button class="btn" id="go">Submit</button></div>
+      <div id="fb"></div></div>`);
+    const inp=$("#ans");inp.focus();
+    const submit=()=>{const v=inp.value.trim();if(!v)return;
+      const hit=q.a.find(a=>matches(v,[a[0],...a.slice(2)]));
+      if(!hit){misses++;
+        if(misses<3){$("#fb").innerHTML=`<div class="feedback bad">“${esc(v)}” isn't in the scroll. Check spelling or try another answer (${3-misses} ${3-misses===1?"try":"tries"} left).</div>`;inp.value="";inp.focus();return}
+        reveal(null,0);return}
+      reveal(hit,hit[1]);};
+    $("#go").onclick=submit;inp.onkeydown=e=>{if(e.key==="Enter")submit()};
+  }
+  function reveal(hit,pts){
+    total+=pts;const q=qs[i];lines.push(pts>=70?"🟥":pts>=40?"🟧":pts>0?"🟨":"⬛");
+    const sorted=q.a.slice().sort((a,b)=>b[1]-a[1]);
+    $("#fb").innerHTML=`<div class="feedback ${pts>=40?"":pts>0?"mid":"bad"}"><b>${hit?`${esc(hit[0])}: ${pts} points`:"No points this time"}</b>
+      <p style="margin:.4rem 0 .2rem">Answers in the scroll, rarest first:</p>
+      <ul class="list">${sorted.map(a=>`<li class="${hit===a?"you":""}"><span>${esc(a[0])}</span><span class="muted">${a[1]}</span></li>`).join("")}</ul>
+      <div class="row" style="margin-top:.8rem"><button class="btn" id="nx">${i+1<qs.length?"Next prompt":"See result"}</button></div></div>`;
+    $("#go").disabled=true;$("#ans").disabled=true;
+    $("#nx").onclick=()=>{i++;if(i<qs.length)step();else showResult(g,total,qs.length*100,`${g.name} ${total} pts\n${lines.join("")}`)};$("#nx").focus();
+  }
+  step();
+}
+
+/* ---------- Closest Guess ---------- */
+function runFermi(g){
+  const rng=rngFor(g.id);const qs=pick(FERMI,5,rng);let i=0,total=0;const lines=[];
+  function step(){
+    const q=qs[i];let era=-1;
+    shell(g,`Question ${i+1} of ${qs.length}`,`<div class="panel">${tag(q.cat)}<p class="prompt">${esc(q.q)}</p>
+      <div class="row"><input class="input" id="ans" inputmode="decimal" autocomplete="off" aria-label="Your estimate" placeholder="${q.type==="year"?"Year":"Your estimate"}">
+      ${q.type==="year"?`<div class="seg" role="group" aria-label="Era"><button data-era="-1" aria-pressed="true">BCE</button><button data-era="1" aria-pressed="false">CE</button></div>`:`<span class="muted">${esc(q.unit)}</span>`}
+      <button class="btn" id="go">Lock in</button></div><div id="fb"></div></div>`);
+    app.querySelectorAll("[data-era]").forEach(b=>b.onclick=()=>{era=+b.dataset.era;app.querySelectorAll("[data-era]").forEach(x=>x.setAttribute("aria-pressed",x===b))});
+    const inp=$("#ans");inp.focus();
+    const submit=()=>{let v=parseFloat(inp.value.replace(/,/g,""));if(!isFinite(v)){$("#fb").innerHTML=`<div class="feedback bad">Enter a number.</div>`;return}
+      let pts;
+      if(q.type==="year"){v=Math.abs(v)*era;pts=Math.max(0,Math.round(100-Math.abs(v-q.a)/q.scale*100))}
+      else{if(v<=0){$("#fb").innerHTML=`<div class="feedback bad">Enter a number greater than zero.</div>`;return}
+        pts=Math.max(0,Math.round(100*(1-Math.abs(Math.log10(v/q.a))/(q.spread||1))))}
+      total+=pts;lines.push(pts>=90?"🎯":pts>=60?"🟩":pts>=30?"🟨":"⬛");
+      const ans=q.type==="year"?fmtYear(q.a):`${fmtNum(q.a)} ${q.unit}`,you=q.type==="year"?fmtYear(v):`${fmtNum(v)} ${q.unit}`;
+      $("#fb").innerHTML=`<div class="feedback ${pts>=60?"":pts>=30?"mid":"bad"}"><b>${pts} points.</b> You said ${esc(you)}. Answer: ${esc(ans)}.<p style="margin:.4rem 0 0">${esc(q.fact)}</p>
+        <div class="row" style="margin-top:.8rem"><button class="btn" id="nx">${i+1<qs.length?"Next question":"See result"}</button></div></div>`;
+      $("#go").disabled=true;inp.disabled=true;
+      $("#nx").onclick=()=>{i++;if(i<qs.length)step();else showResult(g,total,qs.length*100,`${g.name} ${total} pts\n${lines.join("")}`)};$("#nx").focus();};
+    $("#go").onclick=submit;inp.onkeydown=e=>{if(e.key==="Enter")submit()};
+  }
+  step();
+}
+
+/* ---------- Four Treasures (Connections) ---------- */
+function runConnect(g){
+  const rng=rngFor(g.id);const P=pick(CONNECT,1,rng)[0];
+  const groups=P.groups.map((x,lv)=>({...x,lv}));
+  let tiles=shuffle(groups.flatMap(x=>x.items),rng),sel=[],solved=[],mistakes=0,msg="",foundCount=0;const hist=[];
+  const sq=["🟩","🟫","🟦","🟥"];
+  function draw(){
+    shell(g,`Mistakes left <span class="dots">${[0,1,2,3].map(k=>`<i class="${k<mistakes?"used":""}"></i>`).join("")}</span>`,
+     `${tag(P.cat)}<p class="muted" style="margin-top:0">Find four groups of four. Tap four items, then check.</p>
+     ${solved.map(s=>`<div class="solved lv${s.lv}"><b>${esc(s.name)}</b>${esc(s.items.join(", "))}</div>`).join("")}
+     <div class="cgrid">${tiles.map(t=>`<button class="ctile" data-t="${esc(t)}" aria-pressed="${sel.includes(t)}">${esc(t)}</button>`).join("")}</div>
+     <p class="muted" style="min-height:1.5em;text-align:center" aria-live="assertive">${esc(msg)}</p>
+     <div class="row" style="justify-content:center"><button class="btn ghost" id="shuf">Shuffle</button><button class="btn ghost" id="clr">Deselect</button><button class="btn" id="chk" ${sel.length===4?"":"disabled"}>Check</button></div>`);
+    app.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{const t=b.dataset.t;if(sel.includes(t))sel=sel.filter(x=>x!==t);else if(sel.length<4)sel.push(t);msg="";draw()});
+    $("#shuf").onclick=()=>{tiles=shuffle(tiles,Math.random);draw()};
+    $("#clr").onclick=()=>{sel=[];draw()};
+    $("#chk").onclick=check;
+  }
+  function check(){
+    hist.push(sel.map(t=>sq[groups.find(x=>x.items.includes(t)).lv]).join(""));
+    const grp=groups.find(x=>sel.every(t=>x.items.includes(t)));
+    if(grp){solved.push(grp);tiles=tiles.filter(t=>!grp.items.includes(t));sel=[];msg="";
+      if(solved.length===4){draw();return finish(true)}}
+    else{mistakes++;const best=Math.max(...groups.map(x=>sel.filter(t=>x.items.includes(t)).length));
+      msg=best===3?"One away.":"Not a group.";
+      if(mistakes>=4){foundCount=solved.length;solved=solved.concat(groups.filter(x=>!solved.includes(x)));tiles=[];sel=[];msg="Out of mistakes. Here are the groups.";draw();return finish(false)}}
+    draw();
+  }
+  function finish(won){
+    const score=won?8-mistakes:foundCount;
+    setTimeout(()=>showResult(g,score,8,`${g.name} ${won?"solved":"unsolved"}, ${mistakes} mistake${mistakes===1?"":"s"}\n${hist.join("\n")}`),1800);
+  }
+  draw();
+}
+
+/* ---------- Timeline ---------- */
+function runTimeline(g){
+  const rng=rngFor(g.id);let evs;
+  for(let tries=0;tries<20;tries++){evs=pick(TIMELINE,6,rng);const ys=evs.map(e=>e.y).sort((a,b)=>a-b);if(ys.every((y,k)=>k===0||y-ys[k-1]>=5))break}
+  let order=shuffle(evs,rng);const correct=evs.slice().sort((a,b)=>a.y-b.y);let attempt=0,marks=null,done=false;const lines=[];
+  function draw(){
+    shell(g,`Check ${Math.min(attempt+1,3)} of 3`,`<p class="muted" style="margin-top:0">Put these in order, oldest at the top. You get three checks.</p>
+      <ol class="tl">${order.map((e,k)=>`<li class="${marks?(marks[k]?"ok":"no"):""}">
+        <div class="arrows"><button data-up="${k}" aria-label="Move up" ${k===0||done?"disabled":""}>▲</button><button data-dn="${k}" aria-label="Move down" ${k===order.length-1||done?"disabled":""}>▼</button></div>
+        <span class="txt">${esc(e.t)}<br>${tag(e.cat)}</span>${done?`<span class="yr">${esc(e.d)}</span>`:""}</li>`).join("")}</ol>
+      <div class="row" style="margin-top:1rem">${done?`<button class="btn" id="fin">See result</button>`:`<button class="btn" id="chk">Check order</button>`}</div>`);
+    app.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>{const k=+b.dataset.up;[order[k-1],order[k]]=[order[k],order[k-1]];marks=null;draw()});
+    app.querySelectorAll("[data-dn]").forEach(b=>b.onclick=()=>{const k=+b.dataset.dn;[order[k+1],order[k]]=[order[k],order[k+1]];marks=null;draw()});
+    if($("#chk"))$("#chk").onclick=check;if($("#fin"))$("#fin").onclick=fin;
+  }
+  let score=0;
+  function check(){
+    attempt++;marks=order.map((e,k)=>e===correct[k]);const n=marks.filter(Boolean).length;lines.push(marks.map(m=>m?"🟩":"⬛").join(""));
+    if(n===6){score=[100,70,40][attempt-1];done=true}
+    else if(attempt>=3){score=n*10;done=true;order=correct.slice();marks=order.map(()=>true)}
+    draw();
+  }
+  function fin(){showResult(g,score,100,`${g.name} ${score} pts\n${lines.join("\n")}`)}
+  draw();
+}
+
+/* ---------- Who Am I? ---------- */
+function runWho(g){
+  const rng=rngFor(g.id);const qs=pick(WHO,3,rng);let i=0,total=0;const lines=[];
+  function step(){
+    const q=qs[i];let shown=1,over=false,fb="";
+    function draw(){
+      shell(g,`Mystery ${i+1} of ${qs.length}`,`<div class="panel">${tag(q.cat)}<p class="prompt">Who or what am I?</p>
+        <ol class="cluelist">${q.clues.slice(0,shown).map(c=>`<li>${esc(c)}</li>`).join("")}</ol>
+        ${over?"":`<div class="row"><input class="input" id="ans" autocomplete="off" aria-label="Your guess" placeholder="Your guess"><button class="btn" id="go">Guess</button>
+        <button class="btn ghost" id="more">${shown<5?`Next clue (${100-shown*20} pts left)`:"Give up"}</button></div>`}
+        <div>${fb}</div></div>`);
+      if(over){$("#nx").onclick=()=>{i++;if(i<qs.length)step();else showResult(g,total,qs.length*100,`${g.name} ${total} pts\n${lines.join("")}`)};$("#nx").focus();return}
+      const inp=$("#ans");inp.focus();
+      const submit=()=>{const v=inp.value.trim();if(!v)return;
+        if(matches(v,q.a)){const pts=120-shown*20;total+=pts;lines.push(["","🥇","🥈","🥉","🟩","🟨"][shown]);over=true;
+          fb=`<div class="feedback"><b>${esc(q.a[0])}! ${pts} points.</b><ol class="cluelist" style="margin:.5rem 0 0">${q.clues.slice(shown).map(c=>`<li>${esc(c)}</li>`).join("")}</ol><div class="row" style="margin-top:.8rem"><button class="btn" id="nx">${i+1<qs.length?"Next mystery":"See result"}</button></div></div>`;draw()}
+        else{fb=`<div class="feedback bad">Not “${esc(v)}”.${shown<5?" Try again or reveal another clue.":" Try again or give up."}</div>`;draw()}};
+      $("#go").onclick=submit;inp.onkeydown=e=>{if(e.key==="Enter")submit()};
+      $("#more").onclick=()=>{if(shown<5){shown++;fb="";draw()}else{over=true;lines.push("⬛");fb=`<div class="feedback bad"><b>It was ${esc(q.a[0])}.</b><div class="row" style="margin-top:.8rem"><button class="btn" id="nx">${i+1<qs.length?"Next mystery":"See result"}</button></div></div>`;draw()}};
+    }
+    draw();
+  }
+  step();
+}
+
+/* ---------- Odd One Out & Myth or Fact ---------- */
+function runChoice(g,items,n,render){
+  const rng=rngFor(g.id);const qs=pick(items,n,rng);let i=0,total=0;const lines=[];
+  function step(){
+    const q=qs[i];const {prompt,opts,isRight,why}=render(q,rng);
+    shell(g,`${i+1} of ${qs.length}`,`<div class="panel">${tag(q.cat)}<p class="prompt">${esc(prompt)}</p>
+      <div class="choices">${opts.map((o,k)=>`<button class="choice" data-k="${k}">${esc(o)}</button>`).join("")}</div><div id="fb"></div></div>`);
+    app.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{
+      const k=+b.dataset.k,ok=isRight(opts[k]);if(ok)total+=10;lines.push(ok?"🟩":"⬛");
+      app.querySelectorAll("[data-k]").forEach(x=>{x.disabled=true;if(isRight(opts[+x.dataset.k]))x.classList.add("right");else if(x===b)x.classList.add("wrong")});
+      $("#fb").innerHTML=`<div class="feedback ${ok?"":"bad"}"><b>${ok?"Correct.":"Not quite."}</b> ${esc(why)}<div class="row" style="margin-top:.8rem"><button class="btn" id="nx">${i+1<qs.length?"Next":"See result"}</button></div></div>`;
+      $("#nx").onclick=()=>{i++;if(i<qs.length)step();else showResult(g,total,qs.length*10,`${g.name} ${total/10}/${qs.length}\n${lines.join("")}`)};$("#nx").focus();});
+  }
+  step();
+}
+function runOdd(g){runChoice(g,ODD,8,(q,rng)=>({prompt:"Which one doesn't belong?",opts:shuffle(q.o,rng),isRight:o=>o===q.x,why:q.why}))}
+function runMyth(g){runChoice(g,TF,10,q=>({prompt:q.s,opts:["Fact","Myth"],isRight:o=>(o==="Fact")===q.t,why:q.why}))}
+
+/* ============ NEW GAME CONTENT ============ */
+const ROUTE=[
+{n:"Chang'an",f:"The Han capital (modern Xi'an) and the eastern start of the Silk Road. Your camels are loaded with silk."},
+{n:"Lanzhou",f:"Caravans crossed the Huang He here and entered the Hexi Corridor, a narrow strip between mountains and desert."},
+{n:"Dunhuang",f:"An oasis on the edge of the Gobi. The Han built the Jade Gate Pass nearby to control who entered and left China."},
+{n:"Kashgar",f:"An oasis at the western edge of the Taklamakan Desert, where the northern and southern desert routes joined again."},
+{n:"Samarkand",f:"A trading city of the Sogdians, merchants who carried goods between China and Persia for centuries."},
+{n:"Merv",f:"A great oasis city in the Parthian Empire (in modern Turkmenistan). Parthian traders controlled this part of the route."},
+{n:"Ctesiphon",f:"The Parthian capital on the Tigris River. Parthians kept Chinese and Roman traders from meeting directly."},
+{n:"Antioch",f:"A major Roman city in Syria. From here, goods moved on to Mediterranean ports."},
+{n:"Rome",f:"Journey complete. Silk was a luxury here, and Roman writers like Pliny the Elder complained about how much money left the empire to buy it."}
+];
+const DECOYS=[
+{n:"Luoyang",why:"Luoyang is east of Chang'an. That's the wrong direction."},
+{n:"Anyang",why:"Anyang, the old Shang capital, is north-east of Chang'an. Wrong way."},
+{n:"Guangzhou",why:"Guangzhou is in southern China, on the sea routes, not the overland route west."},
+{n:"Lhasa",why:"Lhasa sits high on the Tibetan Plateau, far south of the caravan routes."},
+{n:"Athens",why:"Athens is in Greece, well off the overland route at this point."},
+{n:"Sparta",why:"Sparta is in southern Greece, nowhere near this stage of the journey."},
+{n:"Memphis",why:"Memphis is in Egypt, not on the overland route from Asia to Rome."},
+{n:"Thebes",why:"Thebes is far up the Nile in Egypt, not on this route."}
+];
+
+const MANDATE=[
+{s:"The Huang He has burst its banks. Villages are flooded and crops destroyed.",c:[
+ {t:"Send workers to repair the dikes and give out grain",e:[10,15,-15]},
+ {t:"Ignore it. The floods are far from the capital",e:[-20,-20,0]},
+ {t:"Raise taxes there to pay for a new palace",e:[-15,-25,10]}],
+ note:"Floods were seen as a warning from Heaven. Han rulers organised dike repairs and relief to show they still deserved to rule."},
+{s:"Xiongnu horsemen are raiding farms along the northern frontier.",c:[
+ {t:"Send a large army north",e:[10,-5,-20]},
+ {t:"Send gifts and a princess as a bride to make peace",e:[5,5,-10]},
+ {t:"Do nothing and hope they leave",e:[-10,-15,0]}],
+ note:"Early Han emperors used the heqin policy (gifts and royal marriages). Emperor Wu later went to war against the Xiongnu."},
+{s:"Merchants are growing very rich selling salt and iron.",c:[
+ {t:"Make salt and iron a government monopoly",e:[0,-5,20]},
+ {t:"Leave the merchants alone",e:[0,5,-5]},
+ {t:"Ban the salt and iron trade completely",e:[-5,-15,-15]}],
+ note:"Emperor Wu made salt and iron state monopolies in 117 BCE to pay for his wars."},
+{s:"You need new officials to run the empire.",c:[
+ {t:"Choose them for their Confucian learning and good character",e:[10,5,-5]},
+ {t:"Sell the positions to wealthy families",e:[-15,-10,15]},
+ {t:"Give the jobs to your relatives",e:[-10,-5,0]}],
+ note:"In 124 BCE Emperor Wu founded the Imperial Academy to train officials in the Confucian classics."},
+{s:"A bright comet appears in the night sky. People whisper that Heaven is unhappy.",c:[
+ {t:"Lower taxes and pardon prisoners to show your virtue",e:[15,10,-10]},
+ {t:"Ignore the comet",e:[-10,-5,0]},
+ {t:"Punish the astronomers who reported it",e:[-15,-5,0]}],
+ note:"Comets, eclipses and earthquakes were read as messages from Heaven about how well the emperor was ruling."},
+{s:"Zhang Qian returns from the west with news of rich kingdoms and 'heavenly horses'.",c:[
+ {t:"Send envoys and open trade routes west",e:[5,5,15]},
+ {t:"Close the borders. China needs nothing from outsiders",e:[-5,0,-5]},
+ {t:"Send an army to seize the horses",e:[5,-10,-20]}],
+ note:"Trade grew along the Silk Road. Emperor Wu also really did send armies to Ferghana for its horses (104–101 BCE)."},
+{s:"A poor harvest has left many families hungry.",c:[
+ {t:"Open the government granaries",e:[10,20,-15]},
+ {t:"Sell the stored grain at high prices",e:[-10,-20,15]},
+ {t:"Tell farmers to work harder next year",e:[-10,-15,0]}],
+ note:"Han governments kept 'ever-normal granaries', buying grain when cheap and releasing it in bad years."},
+{s:"Scholars at court criticise your policies on salt and iron.",c:[
+ {t:"Hold a public debate and listen to them",e:[10,5,0]},
+ {t:"Burn their books, like the Qin did",e:[-20,-10,0]},
+ {t:"Send them into exile",e:[-10,-5,0]}],
+ note:"In 81 BCE the Han court held a famous debate on salt and iron, recorded in the Discourses on Salt and Iron."},
+{s:"Peasants complain the land tax is too heavy.",c:[
+ {t:"Cut the land tax",e:[5,15,-15]},
+ {t:"Raise it again. The army needs paying",e:[-10,-20,15]},
+ {t:"Make them do extra unpaid labour instead",e:[-10,-15,5]}],
+ note:"Emperor Wen of Han cut the land tax to one-thirtieth of the harvest, and was remembered as a model ruler."},
+{s:"Generals want to extend the frontier walls further west.",c:[
+ {t:"Build them using conscripted peasants",e:[0,-15,-10]},
+ {t:"Build a shorter section and station soldiers who also farm",e:[5,0,-10]},
+ {t:"Don't build. Walls are a waste",e:[-5,5,5]}],
+ note:"The Han extended walls and watchtowers into the Hexi Corridor, often staffed by soldier-farmers."}
+];
+
+const SORTS=[
+{cat:"china",title:"Which philosophy?",bins:["Confucianism","Daoism","Legalism"],cards:[
+ ["Respect your parents and ancestors",0],["A ruler should lead by good example",0],["Education makes a person better",0],
+ ["Go with the flow of nature. Don't force things",1],["Simplicity and stillness bring peace",1],["Yin and yang must stay in balance",1],
+ ["People are selfish, so strict laws are needed",2],["Reward obedience and punish disobedience harshly",2],["The ruler's power must be total",2]]},
+{cat:"china",title:"Which dynasty?",bins:["Shang","Qin","Han"],cards:[
+ ["Oracle bone writing",0],["Fu Hao's tomb",0],["Capital at Anyang",0],
+ ["The Terracotta Army",1],["Standard coins and script",1],["Burning of the books",1],
+ ["Zhang Qian's journeys west",2],["Cai Lun's paper",2],["Confucianism becomes official",2]]},
+{cat:"china",title:"Primary or secondary source?",bins:["Primary","Secondary"],cards:[
+ ["A Shang oracle bone",0],["A terracotta warrior",0],["A Han bronze coin",0],["Qin laws written on bamboo strips",0],
+ ["A 2020 documentary about the Great Wall",1],["Your Year 7 textbook",1],["A modern drawing of Chang'an",1],["A historian's book from 2010",1]]},
+{cat:"other",title:"Which civilisation?",bins:["Egypt","Greece","Rome"],cards:[
+ ["Hieroglyphs",0],["Pharaoh",0],["Mummification",0],
+ ["The agora",1],["The first Olympic Games",1],["The Parthenon",1],
+ ["Legions",2],["Aqueducts",2],["The Senate",2]]},
+{cat:"local",title:"Which level of government?",bins:["Federal","State","Local"],cards:[
+ ["Defence force",0],["Printing money",0],["Passports",0],
+ ["Public schools",1],["Police",1],["Public hospitals",1],
+ ["Rubbish collection",2],["Local parks",2],["Public libraries",2]]}
+];
+
+/* ---------- Place in Time ---------- */
+function runPlace(g){
+  const rng=rngFor(g.id);const R=5;let i=0,total=0;const lines=[];
+  const targets=pick(TIMELINE,R,rng);
+  const rounds=targets.map(t=>{let refs;
+    for(let k=0;k<40;k++){refs=pick(TIMELINE.filter(e=>e!==t&&Math.abs(e.y-t.y)>=5),4,rng);const ys=refs.map(e=>e.y).sort((a,b)=>a-b);if(ys.every((y,j)=>j===0||y-ys[j-1]>=5))break}
+    refs.sort((a,b)=>a.y-b.y);return{t,refs}});
+  function step(){
+    const {t,refs}=rounds[i];const right=refs.filter(r=>r.y<t.y).length;let chosen=null;
+    function draw(){
+      let html="";
+      for(let k=0;k<=refs.length;k++){
+        if(chosen===null)html+=`<li class="gap"><button data-gap="${k}">Place it here</button></li>`;
+        else{
+          if(k===right)html+=`<li class="placed ${chosen===right?"ok":"no"}"><span class="txt"><b>${esc(t.t)}</b></span><span class="yr">${esc(t.d)}</span></li>`;
+          if(k===chosen&&chosen!==right)html+=`<li class="gap miss"><span>Your guess</span></li>`;
+        }
+        if(k<refs.length)html+=`<li class="ref"><span class="txt">${esc(refs[k].t)}</span><span class="yr">${esc(refs[k].d)}</span></li>`;
+      }
+      shell(g,`Event ${i+1} of ${R}`,`<div class="panel">${tag(t.cat)}<p class="muted" style="margin:0">Where does this event fit?</p>
+        <p class="prompt">${esc(t.t)}</p>
+        <p class="muted" style="margin-top:-.4rem">Oldest at the top.</p>
+        <ol class="ptl">${html}</ol><div id="fb"></div></div>`);
+      app.querySelectorAll("[data-gap]").forEach(b=>b.onclick=()=>{
+        chosen=+b.dataset.gap;const off=Math.abs(chosen-right);const pts=off===0?20:off===1?10:0;total+=pts;lines.push(off===0?"🟩":off===1?"🟨":"⬛");draw();
+        $("#fb").innerHTML=`<div class="feedback ${off===0?"":off===1?"mid":"bad"}"><b>${off===0?"Exactly right. 20 points.":off===1?"One spot away. 10 points.":"Not quite. 0 points."}</b> It happened ${esc(t.d)}.
+          <div class="row" style="margin-top:.8rem"><button class="btn" id="nx">${i+1<R?"Next event":"See result"}</button></div></div>`;
+        $("#nx").onclick=()=>{i++;if(i<R)step();else showResult(g,total,R*20,`${g.name} ${total} pts\n${lines.join("")}`)};$("#nx").focus();});
+    }
+    draw();
+  }
+  step();
+}
+
+/* ---------- Silk Road Journey ---------- */
+function runSilk(g){
+  const rng=rngFor(g.id);let k=1,total=0,tries=0;const lines=[];const max=(ROUTE.length-1)*10;
+  let opts=null,wrong=[],fb="";
+  function newOpts(){opts=shuffle([ROUTE[k],...shuffle(DECOYS,rng).slice(0,2)],rng);wrong=[];tries=0}
+  function draw(){
+    const done=k>=ROUTE.length;
+    shell(g,done?"Arrived":`Leg ${k} of ${ROUTE.length-1}`,`<div class="panel">${tag("china")}
+      <ol class="route" aria-hidden="true">${ROUTE.map((r,j)=>`<li class="${j<k?"been":j===k?"next":""}"><span class="dot"></span></li>`).join("")}</ol>
+      <p class="trail">${ROUTE.slice(0,Math.min(k,ROUTE.length)).map(r=>esc(r.n)).join(" › ")}${k<ROUTE.length?" › ?":""}</p>
+      <p class="muted" style="margin:.2rem 0 0">You're in <b>${esc(ROUTE[Math.min(k,ROUTE.length)-1].n)}</b>. ${esc(ROUTE[Math.min(k,ROUTE.length)-1].f)}</p>
+      ${done?"":`<p class="prompt" style="margin-top:1rem">Where should your caravan head next?</p>
+      <div class="choices one">${opts.map((o,j)=>`<button class="choice ${wrong.includes(o)?"wrong":""}" data-o="${j}" ${wrong.includes(o)?"disabled":""}>${esc(o.n)}</button>`).join("")}</div>`}
+      <div>${fb}</div>${done?`<div class="row" style="margin-top:1rem"><button class="btn" id="fin">See result</button></div>`:""}</div>`);
+    app.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{
+      const o=opts[+b.dataset.o];
+      if(o===ROUTE[k]){const pts=tries===0?10:tries===1?5:0;total+=pts;lines.push(tries===0?"🐫":tries===1?"🟨":"⬛");fb=`<div class="feedback"><b>On to ${esc(o.n)}. +${pts}</b></div>`;k++;if(k<ROUTE.length)newOpts();draw()}
+      else{tries++;wrong.push(o);fb=`<div class="feedback bad">${esc(o.why)}</div>`;
+        if(tries>=2){lines.push("⬛");fb+=`<div class="feedback mid">The next stop was ${esc(ROUTE[k].n)}.</div>`;k++;if(k<ROUTE.length)newOpts()}
+        draw()}});
+    if($("#fin"))$("#fin").onclick=()=>showResult(g,total,max,`${g.name} ${total}/${max}\n${lines.join("")}`);
+  }
+  newOpts();draw();
+}
+
+/* ---------- Mandate of Heaven ---------- */
+function runMandate(g){
+  const rng=rngFor(g.id);const evs=shuffle(MANDATE,rng).slice(0,6).map(ev=>({...ev,c:shuffle(ev.c,rng)}));let i=0;const m={h:60,p:60,t:60};const lines=[];let fb="",answered=false,fallen=false;
+  const clamp=v=>Math.max(0,Math.min(100,v));
+  function meter(label,v){return `<div class="meter"><span>${label}</span><div class="bar"><i style="width:${v}%;background:${v<25?"var(--cinnabar)":v<50?"var(--bronze)":"var(--jade)"}"></i></div><b>${v}</b></div>`}
+  function draw(){
+    const ev=evs[i];
+    shell(g,`Year ${i+1} of ${evs.length}`,`<div class="panel">${tag("china")}
+      <p class="muted" style="margin-top:0">You are a Han emperor. Keep Heaven, the people and the treasury content. If any reaches zero, you lose the Mandate.</p>
+      <div class="meters">${meter("Heaven's favour",m.h)}${meter("The people",m.p)}${meter("Treasury",m.t)}</div>
+      <p class="prompt" style="margin-top:1rem">${esc(ev.s)}</p>
+      ${answered?"":`<div class="choices one">${ev.c.map((c,j)=>`<button class="choice" data-c="${j}">${esc(c.t)}</button>`).join("")}</div>`}
+      <div>${fb}</div></div>`);
+    app.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{
+      const c=ev.c[+b.dataset.c];const [dh,dp,dt]=c.e;m.h=clamp(m.h+dh);m.p=clamp(m.p+dp);m.t=clamp(m.t+dt);
+      const net=dh+dp+dt;lines.push(net>0?"🟩":net>-10?"🟨":"🟥");
+      const sg=v=>(v>0?"+":"")+v;
+      fallen=m.h===0||m.p===0||m.t===0;answered=true;
+      fb=`<div class="feedback ${net>0?"":net>-10?"mid":"bad"}"><b>You chose: ${esc(c.t)}.</b> Heaven ${sg(dh)}, people ${sg(dp)}, treasury ${sg(dt)}.
+        <p style="margin:.4rem 0 0">${esc(ev.note)}</p>
+        ${fallen?`<p style="margin:.4rem 0 0"><b>Rebellions break out. Your dynasty has lost the Mandate of Heaven.</b></p>`:""}
+        <div class="row" style="margin-top:.8rem"><button class="btn" id="nx">${!fallen&&i+1<evs.length?"Next year":"See result"}</button></div></div>`;
+      draw();
+      $("#nx").onclick=()=>{if(!fallen&&i+1<evs.length){i++;answered=false;fb="";draw()}else{const score=fallen?0:Math.round((m.h+m.p+m.t)/3);
+        showResult(g,score,100,`${g.name} ${fallen?"Mandate lost":score+"/100"}\n${lines.join("")}`)}};$("#nx").focus();});
+  }
+  draw();
+}
+
+/* ---------- Sort the Scrolls ---------- */
+function runSort(g){
+  const rng=rngFor(g.id);const set=pick(SORTS,1,rng)[0];const cards=shuffle(set.cards,rng);let i=0,score=0;const placed=set.bins.map(()=>[]);const lines=[];let fb="";
+  function draw(){
+    const done=i>=cards.length;const card=cards[i];
+    shell(g,done?"Sorted":`Card ${i+1} of ${cards.length}`,`${tag(set.cat)}<h3 style="margin:.2rem 0 .8rem">${esc(set.title)}</h3>
+      ${done?"":`<div class="sortcard">${esc(card[0])}</div><p class="muted" style="text-align:center;margin:.4rem 0 .8rem">Tap the group it belongs to.</p>`}
+      <div class="bins" style="grid-template-columns:repeat(${set.bins.length},minmax(0,1fr))">${set.bins.map((b,j)=>`<div class="bin">
+        <button class="btn ${done?"ghost":""}" data-b="${j}" ${done?"disabled":""}>${esc(b)}</button>
+        <ul>${placed[j].map(p=>`<li class="${p.ok?"ok":"no"}">${esc(p.text)}${p.ok?"":` <span class="muted">(${esc(set.bins[p.right])})</span>`}</li>`).join("")}</ul></div>`).join("")}</div>
+      <div>${fb}</div>${done?`<div class="row" style="margin-top:1rem"><button class="btn" id="fin">See result</button></div>`:""}`);
+    app.querySelectorAll("[data-b]").forEach(b=>b.onclick=()=>{
+      const j=+b.dataset.b,ok=j===card[1];if(ok)score++;lines.push(ok?"🟩":"⬛");placed[j].push({text:card[0],ok,right:card[1]});
+      fb=ok?"":`<div class="feedback bad">“${esc(card[0])}” belongs in ${esc(set.bins[card[1]])}.</div>`;i++;draw()});
+    if($("#fin"))$("#fin").onclick=()=>showResult(g,score,cards.length,`${g.name}: ${set.title} ${score}/${cards.length}\n${lines.join("")}`);
+  }
+  draw();
+}
+
+applyBig();home();
+</script>
+</body>
+</html>
